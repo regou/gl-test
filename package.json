@@ -1,0 +1,25 @@
+{
+  "name": "gl-test",
+  "version": "1.41.0",
+  "description": "test gl with jest",
+  "main": "src/index.js",
+  "directories": {
+    "test": "__test__"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:regou/gl-test.git"
+  },
+  "dependencies": {
+    "three": "0.85.2"
+  },
+  "devDependencies": {
+    "gl": "4.0.*",
+    "jest": "20.0.*",
+    "looks-same": "3.2.*",
+    "three-png-stream": "1.0.*"
+  }
+}

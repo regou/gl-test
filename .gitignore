@@ -1,0 +1,10 @@
+node_modules/
+npm-debug.log
+.vscode/
+.idea/
+
+*~
+
+
+__tests__/comparisons/*.cur.png
+__tests__/comparisons/*.diff.png
