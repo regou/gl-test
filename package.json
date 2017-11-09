@@ -17,6 +17,7 @@
     "three": "0.85.2"
   },
   "devDependencies": {
+    "canvas-prebuilt": "^1.6.5-prerelease.1",
     "gl": "4.0.*",
     "jest": "20.0.*",
     "looks-same": "3.2.*",
