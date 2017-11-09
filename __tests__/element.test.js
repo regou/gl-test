@@ -7,6 +7,7 @@ describe('three', function () {
 		const {renderer,canvas,camera,scene,target} = testUtils.init(1, 2, 3);
 
 		function draw() {
+			//https://github.com/stackgl/headless-gl/issues/45
 			var canvas = document.createElement('canvas');
 			var size = 256; // CHANGED
 			canvas.width = size;
