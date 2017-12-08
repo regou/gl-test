@@ -1,41 +1,20 @@
 const THREE = global.THREE = require('three');
 const testUtils = require('./utils');
 
-describe('three', function () {
+describe('Elements', function () {
 
-	test('Sprite ok',async function () {
+	test('TextMesh ok',async function () {
 		const {renderer,canvas,camera,scene,target} = testUtils.init(1, 2, 3);
 
-		function draw() {
-			//https://github.com/stackgl/headless-gl/issues/45
-			var canvas = document.createElement('canvas');
-			var size = 256; // CHANGED
-			canvas.width = size;
-			canvas.height = size;
-			var context = canvas.getContext('2d');
-			context.fillStyle = '#ff0000'; // CHANGED
-			context.textAlign = 'center';
-			context.font = '24px Arial';
-			context.fillText("some text", size / 2, size / 2);
-			return canvas;
-		}
+		const TextMesh = require('../src/TextMesh');
 
-		var amap = new THREE.Texture(draw());
-		amap.needsUpdate = true;
+		let msh = new TextMesh("HELLO WORLD", 100, "black", "yellow");
 
-		var mat = new THREE.SpriteMaterial({
-			map: amap,
-			transparent: false,
-			useScreenCoordinates: false,
-			color: 0xffffff
-		});
+		scene.add(msh);
 
-		var sp = new THREE.Sprite(mat);
-		scene.add(sp);
+		await testUtils.genPng(renderer,target,'TextMesh_ok',true);
 
-		renderer.render(scene, camera, target, true);
-
-		await testUtils.genPng(renderer,target,'Sprite_ok');
+		// await testUtils.assertWithSpec(renderer,scene,camera,target,'TextMesh_ok');
 
 	});
 

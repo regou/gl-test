@@ -23,8 +23,16 @@ function init(camerax, cameray, cameraz) {
 	camera.position.set(camerax || 0, cameray || 0, cameraz || 10);
 	camera.lookAt(scene.position);
 
-	const light = new THREE.HemisphereLight(0xe3c586, 0xcb3ac2, 1);
-	scene.add(light)
+	// const light = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+	// scene.add(light);
+
+	const ambientLight = new THREE.AmbientLight(0xAAAAAA);
+	scene.add(ambientLight);
+
+	const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.6);
+	directionalLight.position.set(10, 8, 0.0);
+	scene.add(directionalLight);
+
 
 	let target = new THREE.WebGLRenderTarget(
 		width, height, {
@@ -104,7 +112,13 @@ function genDiffImage(imageName) {
 }
 
 
+async function assertWithSpec (renderer,scene,camera,target,caseName) {
+	renderer.render(scene, camera, target, true);
+	await genPng(renderer,target,caseName);
+	let isSame = await isSameImage(caseName);
+	expect(isSame).toBe(true)
+}
 
 
 
-module.exports = {init,genPng,getImagePath,isSameImage};
+module.exports = {init,genPng,getImagePath,isSameImage,assertWithSpec};

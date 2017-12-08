@@ -2,11 +2,9 @@ const THREE = global.THREE = require('three');
 
 const testUtils = require('./utils');
 
-
-
 describe('Raw', function () {
 	test('vertex ok',async function () {
-		var ls = testUtils.init(-1, 3, 3);
+		const {renderer,canvas,camera,scene,target} = testUtils.init(-1, 3, 3);
 
 		let geometry = new THREE.BoxGeometry( 3, 1, 2 )
 		let	material = new THREE.ShaderMaterial()
@@ -30,14 +28,10 @@ void main() {
 
 		let cube = new THREE.Mesh(geometry, material)
 		cube.position.set(0,0,0);
-		ls.scene.add(cube)
+		scene.add(cube)
 
 
-		ls.renderer.render(ls.scene, ls.camera, ls.target, true);
-
-		await testUtils.genPng(ls.renderer,ls.target,'vertex_ok');
-		let isSame = await testUtils.isSameImage('vertex_ok');
-		expect(isSame).toBe(true)
+		await testUtils.assertWithSpec(renderer,scene,camera,target,'vertex_ok');
 	});
 
 
@@ -52,15 +46,44 @@ void main() {
 		body.position.set(0,0,0);
 		scene.add(body);
 
-		renderer.render(scene, camera, target, true);
-
-
-		await testUtils.genPng(renderer,target,'three_ok');
-
-		let isSame = await testUtils.isSameImage('three_ok');
-
-		expect(isSame).toBe(true)
+		await testUtils.assertWithSpec(renderer,scene,camera,target,'three_ok');
 
 	});
+
+
+	test('Sprite ok',async function () {
+		const {renderer,canvas,camera,scene,target} = testUtils.init(1, 2, 3);
+
+		function draw() {
+			var canvas = document.createElement('canvas');
+			var size = 256; // CHANGED
+			canvas.width = size;
+			canvas.height = size;
+			var context = canvas.getContext('2d');
+			context.fillStyle = '#ff0000'; // CHANGED
+			context.textAlign = 'center';
+			context.font = '24px Arial';
+			context.fillText("some text", size / 2, size / 2);
+			return canvas;
+		}
+
+		var amap = new THREE.Texture(draw());
+		amap.needsUpdate = true;
+
+		var mat = new THREE.SpriteMaterial({
+			map: amap,
+			transparent: false,
+			useScreenCoordinates: false,
+			color: 0xffffff // CHANGED
+		});
+
+		var sp = new THREE.Sprite(mat);
+		sp.scale.set( 10, 10, 1 ); // CHANGED
+		scene.add(sp);
+
+		await testUtils.assertWithSpec(renderer,scene,camera,target,'Sprite_ok');
+
+	});
+
 });
 
